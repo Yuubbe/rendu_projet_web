@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '3c53c005b08f617fa41ab15547137ac1060f4f89',
+        'reference' => '1a64f8f00a82a4a4c81e08f7a10d0a54b32e56a7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '3c53c005b08f617fa41ab15547137ac1060f4f89',
+            'reference' => '1a64f8f00a82a4a4c81e08f7a10d0a54b32e56a7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -898,15 +898,6 @@
             'install_path' => __DIR__ . '/../symfony/password-hasher',
             'aliases' => array(),
             'dev_requirement' => false,
-        ),
-        'symfony/phpunit-bridge' => array(
-            'pretty_version' => 'v8.0.3',
-            'version' => '8.0.3.0',
-            'reference' => '3c59b07980df5d4ae4a2620287016209802261ea',
-            'type' => 'symfony-bridge',
-            'install_path' => __DIR__ . '/../symfony/phpunit-bridge',
-            'aliases' => array(),
-            'dev_requirement' => true,
         ),
         'symfony/polyfill-ctype' => array(
             'dev_requirement' => false,
