@@ -1,3 +1,176 @@
+:root {
+    --primary-color: #3b3e44;
+    --secondary-color: #62798b;
+    --background-color: #616c77;
+    --text-color: #d6d5c1;
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    position: relative;
+    padding: 7rem 0 0 0;
+    margin: 0;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 7rem;
+    background: var(--background-color);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+header a {
+    font-size: 2rem;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+header.sticky {
+    border-bottom: .1rem solid var(--primary-color);
+}
+
+.navigation a {
+    color: var(--text-color);
+    margin-left: 4rem;
+    transition: .2s ease-in-out;
+    position: relative;
+}
+
+.navigation a::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    width: 0%;
+    height: 1px;
+    background: var(--primary-color);
+    transition: width .2s ease-in-out;
+
+}
+
+.navigation a:hover,
+.navigation a.active {
+    color: var(--primary-color);
+}
+
+.navigation a:hover::before,
+.navigation a.active::before {
+    width: 100%;
+}
+
+/* Présentation du site */
+.presentation {
+    width: 100vw;
+    /* largeur totale de la fenêtre */
+    margin: 0;
+    /* supprime toute marge par défaut */
+    padding: 0;
+    /* supprime padding éventuel */
+}
+
+.presentation-image {
+    position: relative;
+    width: 100%;
+    /* largeur totale du parent */
+    height: 400px;
+    /* tu peux augmenter si tu veux un grand banner */
+    background-image: url('/images/banniere.jpg');
+    background-size: cover;
+    /* couvre toute la div */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.presentation-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-color);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.presentation-overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.presentation-overlay p {
+    font-size: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+
+/* Carrousel */
+.carousel-section {
+    padding: 4rem 2rem;
+    position: relative;
+}
+
+.carousel-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: hidden;
+    gap: 2rem;
+    scroll-behavior: smooth;
+}
+
+.carousel-item {
+    min-width: 300px;
+    flex-shrink: 0;
+    background: var(--secondary-color);
+    border-radius: 1rem;
+    overflow: hidden;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.carousel-item img {
+    width: 100%;
+    display: block;
+}
+
+.carousel-item-info {
+    padding: 1rem;
+}
+
+/* Boutons carrousel */
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.carousel-prev {
+    left: 1rem;
+}
+
+.carousel-next {
+    right: 1rem;
 }

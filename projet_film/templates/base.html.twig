@@ -12,6 +12,23 @@
         {% endblock %}
     </head>
     <body>
+        <header>
+            <a href="{{ path('app_home') }}">Site Film de fou</a>
+            <nav class="navigation">
+                <a href="{{ path('app_home') }}" class="{{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}">Accueil</a>
+                <a href="{{ path('app_film') }}" class="{{ app.request.attributes.get('_route') == 'app_film' ? 'active' : '' }}">Films</a>
+
+                {% if app.user %}
+                    {# Liens visibles uniquement si l'utilisateur est connecté #}
+                    <a href="{{ path('app_fav') }}" class="{{ app.request.attributes.get('_route') == 'app_fav' ? 'active' : '' }}">Favoris</a>
+                    <a href="{{ path('app_profile') }}" class="{{ app.request.attributes.get('_route') == 'app_profile' ? 'active' : '' }}">Profile</a>
+                {% else %}
+                    {# Liens visibles uniquement si l'utilisateur n'est pas connecté #}
+                    <a href="{{ path('app_login') }}" class="{{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}">Connexion / Inscription</a>
+                {% endif %}
+            </nav>
+
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>

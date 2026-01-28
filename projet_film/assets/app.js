@@ -8,3 +8,16 @@ import './stimulus_bootstrap.js';
 import './styles/app.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
+
+const carousel = document.querySelector('.carousel');
+const prevBtn = document.querySelector('.carousel-prev');
+const nextBtn = document.querySelector('.carousel-next');
+
+nextBtn.addEventListener('click', () => {
+    carousel.scrollBy({ left: 320, behavior: 'smooth' });
+});
+
+prevBtn.addEventListener('click', () => {
+    carousel.scrollBy({ left: -320, behavior: 'smooth' });
+});
