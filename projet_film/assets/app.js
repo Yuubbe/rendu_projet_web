@@ -21,3 +21,19 @@ nextBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', () => {
     carousel.scrollBy({ left: -320, behavior: 'smooth' });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("registerForm");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert("Les mots de passe ne correspondent pas !");
+        }
+    });
+});

@@ -13,7 +13,7 @@
     </head>
     <body>
         <header>
-            <a href="{{ path('app_home') }}">Site Film de fou</a>
+            <a href="{{ path('app_home') }}" class="logo">Site Film de fou</a>
             <nav class="navigation">
                 <a href="{{ path('app_home') }}" class="{{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}">Accueil</a>
                 <a href="{{ path('app_film') }}" class="{{ app.request.attributes.get('_route') == 'app_film' ? 'active' : '' }}">Films</a>
