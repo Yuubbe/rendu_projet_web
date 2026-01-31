@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+
+<section class="auth-section">
+    <div class="register">
+        <h2>Inscription</h2>
+        <form id="registerForm">
+            <input type="text" placeholder="Nom" required>
+            <input type="text" placeholder="Prénom" required>
+            <input type="text" placeholder="Identifiant" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
+            <button type="submit">S'inscrire</button>
+        </form>
+        <div class="auth-link">
+            Déjà un compte ? <a href="{{path('app_login')}}">Se connecter</a>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{% endblock %}
