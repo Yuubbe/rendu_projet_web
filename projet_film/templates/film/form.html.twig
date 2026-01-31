@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ is_edit ? 'Modifier un film' : 'Nouveau film' }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4" style="max-width: 700px;">
+    <h1 class="mb-4">{{ is_edit ? 'Modifier un film' : 'Ajouter un nouveau film' }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.titre) }}
+        {{ form_row(form.annee) }}
+        {{ form_row(form.duree) }}
+        {{ form_row(form.synopsis) }}
+        {{ form_row(form.prixLocationDefaut) }}
+        {{ form_row(form.affiche) }}
+        {{ form_row(form.genres) }}
+
+        <button class="btn btn-primary mt-3" type="submit">
+            {{ is_edit ? 'Enregistrer les modifications' : 'Créer le film' }}
+        </button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

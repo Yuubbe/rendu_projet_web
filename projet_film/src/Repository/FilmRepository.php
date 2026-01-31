@@ -16,6 +16,28 @@ class FilmRepository extends ServiceEntityRepository
         parent::__construct($registry, Film::class);
     }
 
+    /**
+     * Retourne un QueryBuilder filtré par genre et/ou année.
+     */
+    public function createFilteredQueryBuilder(?int $genreId, ?int $annee)
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->leftJoin('f.genres', 'g')
+            ->addSelect('g');
+
+        if ($genreId) {
+            $qb->andWhere('g.id = :genreId')
+               ->setParameter('genreId', $genreId);
+        }
+
+        if ($annee) {
+            $qb->andWhere('f.annee = :annee')
+               ->setParameter('annee', $annee);
+        }
+
+        return $qb->orderBy('f.titre', 'ASC');
+    }
+
     //    /**
     //     * @return Film[] Returns an array of Film objects
     //     */

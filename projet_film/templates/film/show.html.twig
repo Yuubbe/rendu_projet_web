@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ film.titre }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4" data-film-id="{{ film.id }}">
+    <div class="row">
+        <div class="col-md-4">
+            {% if film.affiche %}
+                <img src="{{ asset(film.affiche) }}" alt="Affiche de {{ film.titre }}" class="img-fluid mb-3">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1>{{ film.titre }}</h1>
+            <p class="text-muted">
+                {{ film.annee }}{% if film.duree %} • {{ film.duree }} min{% endif %}
+            </p>
+            <p>{{ film.synopsis }}</p>
+
+            <p class="mt-3">
+                <strong>Prix de base :</strong> {{ film.prixLocationDefaut }} €
+            </p>
+
+            <div id="tarif-dynamique" class="mt-3">
+                <label for="jour-semaine" class="form-label">Choisir un jour de la semaine :</label>
+                <select id="jour-semaine" name="jour_select" class="form-select" style="max-width: 250px;">
+                    <option value="lundi">Lundi</option>
+                    <option value="mardi">Mardi</option>
+                    <option value="mercredi">Mercredi</option>
+                    <option value="jeudi">Jeudi</option>
+                    <option value="vendredi">Vendredi</option>
+                    <option value="samedi">Samedi</option>
+                    <option value="dimanche">Dimanche</option>
+                </select>
+
+                <p class="mt-2">
+                    <strong>Prix pour ce jour :</strong>
+                    <span id="prix-jour" data-base="{{ film.prixLocationDefaut }}">{{ film.prixLocationDefaut }}</span> €
+                </p>
+            </div>
+
+            <div class="mt-4 d-flex flex-wrap gap-2">
+                <form method="post" action="{{ path('app_cart_add', {id: film.id}) }}" class="d-inline">
+                    <input type="hidden" name="jour" id="input-jour" value="lundi">
+                    <button class="btn btn-success" type="submit">Ajouter au panier</button>
+                </form>
+                {% if app.user %}
+                    <a href="{{ path('app_film_edit', {id: film.id}) }}" class="btn btn-warning">Modifier</a>
+                    <form method="post" action="{{ path('app_film_delete', {id: film.id}) }}" onsubmit="return confirm('Supprimer ce film ?');" class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_film_' ~ film.id) }}">
+                        <button class="btn btn-danger" type="submit">Supprimer</button>
+                    </form>
+                {% endif %}
+                {% if app.user %}
+                    <a href="{{ path('app_film_favori_toggle', {id: film.id}) }}" class="btn btn-outline-danger">Ajouter / Retirer des favoris</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Connectez-vous pour ajouter aux favoris</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        (function () {
+            const select = document.getElementById('jour-semaine');
+            const prixSpan = document.getElementById('prix-jour');
+            const hiddenJourInput = document.getElementById('input-jour');
+            const filmId = document.querySelector('[data-film-id]').dataset.filmId;
+
+            if (!select || !prixSpan || !filmId) {
+                return;
+            }
+
+            async function updatePrix() {
+                const jour = select.value;
+                if (hiddenJourInput) {
+                    hiddenJourInput.value = jour;
+                }
+                try {
+                    const response = await fetch(`/film/${filmId}/prix?jour=${encodeURIComponent(jour)}`);
+                    if (!response.ok) {
+                        throw new Error('Erreur HTTP');
+                    }
+                    const data = await response.json();
+                    if (typeof data.prix !== 'undefined') {
+                        prixSpan.textContent = data.prix.toFixed(2);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            select.addEventListener('change', updatePrix);
+            // Mise à jour initiale
+            updatePrix();
+        })();
+    </script>
+{% endblock %}
+{% endblock %}

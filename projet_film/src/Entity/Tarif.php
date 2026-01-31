@@ -13,11 +13,15 @@ class Tarif
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $JourSemaine = null;
+    #[ORM\Column(length: 20)]
+    private ?string $jourSemaine = null;
 
     #[ORM\Column]
-    private ?float $Coefficient = null;
+    private ?float $coefficient = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tarifs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Film $film = null;
 
     public function getId(): ?int
     {
@@ -26,24 +30,36 @@ class Tarif
 
     public function getJourSemaine(): ?string
     {
-        return $this->JourSemaine;
+        return $this->jourSemaine;
     }
 
-    public function setJourSemaine(string $JourSemaine): static
+    public function setJourSemaine(string $j): static
     {
-        $this->JourSemaine = $JourSemaine;
+        $this->jourSemaine = $j;
 
         return $this;
     }
 
     public function getCoefficient(): ?float
     {
-        return $this->Coefficient;
+        return $this->coefficient;
     }
 
-    public function setCoefficient(float $Coefficient): static
+    public function setCoefficient(float $c): static
     {
-        $this->Coefficient = $Coefficient;
+        $this->coefficient = $c;
+
+        return $this;
+    }
+
+    public function getFilm(): ?Film
+    {
+        return $this->film;
+    }
+
+    public function setFilm(?Film $film): static
+    {
+        $this->film = $film;
 
         return $this;
     }
