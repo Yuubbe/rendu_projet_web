@@ -33,16 +33,18 @@
             {% for film in films %}
                 <div class="col">
                     <div class="card h-100">
-                        {% if film.affiche %}
-                            <img src="{{ asset(film.affiche) }}" class="card-img-top" alt="Affiche de {{ film.titre }}">
-                        {% endif %}
+                        {% set affichePath = film.affiche ? asset(film.affiche) : asset('images/banniere.jpg') %}
+                        <img src="{{ affichePath }}" class="card-img-top" alt="Affiche de {{ film.titre }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ film.titre }}</h5>
                             <p class="card-text text-muted">
                                 {{ film.annee }}{% if film.duree %} • {{ film.duree }} min{% endif %}
                             </p>
                             <p class="card-text small">
-                                {{ film.synopsis|u.truncate(120, '…') }}
+                                {{ film.synopsis|length > 120
+                                    ? film.synopsis|slice(0, 120) ~ '…'
+                                    : film.synopsis
+                                }}
                             </p>
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center">

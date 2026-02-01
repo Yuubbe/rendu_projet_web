@@ -15,7 +15,7 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date_immutable')]
     private ?\DateTimeInterface $dateLocation = null;
 
     #[ORM\Column(type: 'decimal', precision: 8, scale: 2)]

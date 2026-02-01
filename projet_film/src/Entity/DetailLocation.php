@@ -46,22 +46,22 @@ class DetailLocation
         return $this->film;
     }
 
+    public function setFilm(?Film $film): static
+    {
+        $this->film = $film;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
     public function setLocation(?Location $location): static
     {
         $this->location = $location;
 
         return $this;
-    }
-    #[Route('/film/{id}/prix', name: 'app_film_prix', requirements: ['id' => '\d+'])]
-    public function prix(Film $film, Request $request): JsonResponse
-    {
-        $jour = $request->query->get('jour', 'lundi');
-
-        $prix = $film->getPrixPourJour($jour);
-
-        return new JsonResponse([
-            'jour' => $jour,
-            'prix' => round($prix, 2),
-        ]);
     }
 }

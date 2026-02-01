@@ -6,9 +6,8 @@
 <div class="container mt-4" data-film-id="{{ film.id }}">
     <div class="row">
         <div class="col-md-4">
-            {% if film.affiche %}
-                <img src="{{ asset(film.affiche) }}" alt="Affiche de {{ film.titre }}" class="img-fluid mb-3">
-            {% endif %}
+            {% set affichePath = film.affiche ? asset(film.affiche) : asset('images/banniere.jpg') %}
+            <img src="{{ affichePath }}" alt="Affiche de {{ film.titre }}" class="img-fluid mb-3 w-100" style="object-fit: cover; max-height: 420px;">
         </div>
         <div class="col-md-8">
             <h1>{{ film.titre }}</h1>
@@ -44,7 +43,7 @@
                     <input type="hidden" name="jour" id="input-jour" value="lundi">
                     <button class="btn btn-success" type="submit">Ajouter au panier</button>
                 </form>
-                {% if app.user %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_film_edit', {id: film.id}) }}" class="btn btn-warning">Modifier</a>
                     <form method="post" action="{{ path('app_film_delete', {id: film.id}) }}" onsubmit="return confirm('Supprimer ce film ?');" class="d-inline">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete_film_' ~ film.id) }}">
