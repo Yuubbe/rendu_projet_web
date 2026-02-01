@@ -9,7 +9,7 @@
         <a class="btn btn-success" href="{{ path('app_film_new') }}">+ Ajouter un film</a>
     </div>
 
-    <form method="get" class="row g-3 mb-4" id="live-filter-form">
+    <form method="get" action="{{ path('app_film_index') }}" class="row g-3 mb-4" id="live-filter-form">
         <div class="col-md-4">
             <label for="genre" class="form-label">Genre</label>
             <select id="genre" name="genre" class="form-select">
@@ -29,7 +29,7 @@
             <div id="search-suggestions" class="list-group mt-1 d-none"></div>
         </div>
         <div class="col-12 d-flex align-items-end justify-content-end gap-2">
-            <button type="button" id="live-filter-button" class="btn btn-primary">Filtrer</button>
+            <button type="submit" id="live-filter-button" class="btn btn-primary">Filtrer</button>
             <a href="{{ path('app_film_index') }}" class="btn btn-secondary">Réinitialiser</a>
         </div>
     </form>
