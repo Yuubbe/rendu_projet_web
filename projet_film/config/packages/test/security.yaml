@@ -1,0 +1,11 @@
+security:
+    providers:
+        test_users:
+            id: App\Tests\Security\TestUserProvider
+    firewalls:
+        main:
+            lazy: true
+            provider: test_users
+            form_login:
+                enable_csrf: false
+            logout: ~

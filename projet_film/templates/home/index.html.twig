@@ -48,4 +48,32 @@
     <button class="carousel-next">&#10095;</button>
 </section>
 
+{% if app.user and recommendations is defined and recommendations|length > 0 %}
+<section class="mt-5 container">
+    <h2 class="mb-3">Recommandés pour vous</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for film in recommendations %}
+            {% set affichePath = film.affiche ? asset(film.affiche) : asset('images/banniere.jpg') %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ affichePath }}" class="card-img-top" alt="Affiche de {{ film.titre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ film.titre }}</h5>
+                        <p class="card-text text-muted">{{ film.annee }}</p>
+                        <p class="card-text">{{ film.synopsis|length > 100 ? film.synopsis|slice(0, 100) ~ '…' : film.synopsis }}</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end gap-2">
+                        <a href="{{ path('app_film_show', {id: film.id}) }}" class="btn btn-sm btn-outline-primary">Détails</a>
+                        <form method="post" action="{{ path('app_cart_add', {id: film.id}) }}" class="d-inline">
+                            <input type="hidden" name="jour" value="lundi">
+                            <button class="btn btn-sm btn-success" type="submit">Ajouter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
 {% endblock %}

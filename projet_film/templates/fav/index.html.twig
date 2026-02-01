@@ -4,7 +4,25 @@
 
 {% block body %}
 <div class="container mt-4">
-    <h1 class="mb-4">Mes films favoris</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h1 class="mb-0">Mes films favoris</h1>
+        <div class="btn-group" role="group">
+            <a class="btn btn-sm btn-outline-light" href="{{ path('app_fav_export', {format: 'csv'}) }}">Exporter CSV</a>
+            <a class="btn btn-sm btn-outline-light" href="{{ path('app_fav_export', {format: 'json'}) }}">Exporter JSON</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Importer des favoris (JSON d'IDs)</h5>
+            <div class="d-flex gap-2 flex-wrap">
+                <input id="fav-import-input" class="form-control" style="max-width: 380px;" placeholder="Ex: [1,2,3] ou { &quot;ids&quot;: [1,2] }">
+                <button class="btn btn-outline-primary" id="fav-import-btn" type="button">Importer</button>
+                <span class="text-success d-none" id="fav-import-success">Import effectué</span>
+                <span class="text-danger d-none" id="fav-import-error">Erreur d'import</span>
+            </div>
+        </div>
+    </div>
 
     {% if favoris is empty %}
         <p>Vous n'avez pas encore de film en favoris.</p>
@@ -35,4 +53,42 @@
         </div>
     {% endif %}
 </div>
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('fav-import-btn');
+            const input = document.getElementById('fav-import-input');
+            const ok = document.getElementById('fav-import-success');
+            const ko = document.getElementById('fav-import-error');
+
+            if (!btn || !input) return;
+
+            btn.addEventListener('click', () => {
+                ok?.classList.add('d-none');
+                ko?.classList.add('d-none');
+                let payload;
+                try {
+                    payload = JSON.parse(input.value);
+                } catch (e) {
+                    ko?.classList.remove('d-none');
+                    return;
+                }
+
+                fetch('{{ path('app_fav_import') }}', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload),
+                })
+                    .then((r) => r.ok ? r.json() : Promise.reject())
+                    .then(() => {
+                        ok?.classList.remove('d-none');
+                        setTimeout(() => window.location.reload(), 600);
+                    })
+                    .catch(() => ko?.classList.remove('d-none'));
+            });
+        });
+    </script>
+{% endblock %}
 {% endblock %}

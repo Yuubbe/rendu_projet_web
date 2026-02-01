@@ -30,7 +30,6 @@ final class ProfileController extends AbstractController
 
         // Gestion changement de mot de passe
         $error = null;
-        $success = null;
 
         if ($request->isMethod('POST')) {
             $current = $request->request->get('current_password');
@@ -47,7 +46,8 @@ final class ProfileController extends AbstractController
                 $hashed = $passwordHasher->hashPassword($user, $new);
                 $user->setPassword($hashed);
                 $em->flush();
-                $success = 'Mot de passe mis à jour.';
+                $this->addFlash('success', 'Mot de passe mis à jour.');
+                return $this->redirectToRoute('app_profile');
             }
         }
 
@@ -55,7 +55,6 @@ final class ProfileController extends AbstractController
             'user' => $user,
             'locations' => $locations,
             'error' => $error,
-            'success' => $success,
         ]);
     }
 }

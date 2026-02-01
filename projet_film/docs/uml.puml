@@ -1,0 +1,54 @@
+@startuml
+left to right direction
+
+class User {
+  +id: int
+  +email: string
+  +roles: json
+  +password: string
+  +getFavoris()
+  +getLocations()
+}
+
+class Film {
+  +id: int
+  +titre: string
+  +annee: int
+  +duree: int
+  +synopsis: string
+  +prixLocationDefaut: int
+  +affiche: string
+  +getGenres()
+  +getPrixPourJour(jour)
+}
+
+class Genre {
+  +id: int
+  +nom: string
+}
+
+class Location {
+  +id: int
+  +dateLocation: date
+  +locationPrixFinal: decimal
+}
+
+class DetailLocation {
+  +id: int
+  +prixJour: decimal
+}
+
+class Tarif {
+  +id: int
+  +jourSemaine: string
+  +coefficient: float
+}
+
+User "1" -- "*" Location : effectue
+User "*" -- "*" Film : favoris
+Film "*" -- "*" Genre : appartient
+Location "1" -- "*" DetailLocation : contient
+DetailLocation "*" -- "1" Film : concerne
+Film "1" -- "*" Tarif : applique
+
+@enduml

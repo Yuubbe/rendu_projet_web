@@ -46,6 +46,32 @@ final class FilmController extends AbstractController
         ]);
     }
 
+    #[Route('/films/search', name: 'app_film_search', methods: ['GET'])]
+    public function search(Request $request, FilmRepository $filmRepository): JsonResponse
+    {
+        $term = trim((string) $request->query->get('q', ''));
+        $genreParam = (string) $request->query->get('genres', '');
+        $genreIds = array_filter(array_map('intval', $genreParam !== '' ? explode(',', $genreParam) : []));
+        $anneeMin = $request->query->getInt('annee_min', 0) ?: null;
+        $anneeMax = $request->query->getInt('annee_max', 0) ?: null;
+
+        $results = $filmRepository->searchAdvanced($term ?: null, $genreIds, $anneeMin, $anneeMax, 20);
+        $suggestions = $filmRepository->suggestTitles($term ?: null, 5);
+
+        return $this->json([
+            'results' => array_map(static function (array $row) {
+                return [
+                    'id' => $row['id'],
+                    'titre' => $row['titre'],
+                    'annee' => $row['annee'] ?? null,
+                    'prix' => $row['prixLocationDefaut'] ?? null,
+                    'affiche' => $row['affiche'] ?? null,
+                ];
+            }, $results),
+            'suggestions' => $suggestions,
+        ]);
+    }
+
     #[Route('/film/{id}', name: 'app_film_show', requirements: ['id' => '\\d+'])]
     public function show(Film $film): Response
     {

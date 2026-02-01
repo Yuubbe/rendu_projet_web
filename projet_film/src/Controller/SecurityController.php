@@ -26,11 +26,7 @@ final class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
-    public function logout(): void
-    {
-        // Géré par Symfony
-    }
+
 
     #[Route('/register', name: 'app_register')]
     public function register(

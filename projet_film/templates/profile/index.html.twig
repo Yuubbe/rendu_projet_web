@@ -18,9 +18,10 @@
             {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endif %}
-            {% if success %}
-                <div class="alert alert-success">{{ success }}</div>
-            {% endif %}
+
+            {% for message in app.flashes('success') %}
+                <div class="toast-notice" role="alert">{{ message }}</div>
+            {% endfor %}
 
             <form method="post" class="card" style="padding: 1rem;">
                 <div class="mb-3">

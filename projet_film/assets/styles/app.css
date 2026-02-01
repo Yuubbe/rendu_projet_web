@@ -90,6 +90,18 @@ header a.logo {
     width: 100%;
 }
 
+.nav-logout {
+    color: var(--text-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.nav-logout:hover {
+    background: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+}
+
 /* ================= BANNIÈRE ================= */
 
 .presentation {
@@ -537,6 +549,28 @@ input:focus {
     border-radius: 8px;
     margin-bottom: 1rem;
     font-weight: 600;
+}
+
+.toast-notice {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: #2e7d32;
+    color: #fff;
+    padding: 0.85rem 1.1rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    z-index: 2000;
+    animation: fadeSlideIn 0.4s ease, fadeOut 0.5s ease 3.5s forwards;
+}
+
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-10px); }
 }
 
 .alert-danger { background: rgba(226, 76, 76, 0.15); color: #fecaca; border: 1px solid rgba(226, 76, 76, 0.4); }

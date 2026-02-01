@@ -22,6 +22,9 @@
                     {# Liens visibles uniquement si l'utilisateur est connecté #}
                     <a href="{{ path('app_fav') }}" class="{{ app.request.attributes.get('_route') == 'app_fav' ? 'active' : '' }}">Favoris</a>
                     <a href="{{ path('app_profile') }}" class="{{ app.request.attributes.get('_route') == 'app_profile' ? 'active' : '' }}">Profile</a>
+                    <form action="{{ path('app_logout') }}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-link nav-logout">Déconnexion</button>
+                    </form>
                 {% else %}
                     {# Liens visibles uniquement si l'utilisateur n'est pas connecté #}
                     <a href="{{ path('app_login') }}" class="{{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}">Connexion / Inscription</a>
