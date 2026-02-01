@@ -12,7 +12,7 @@ class FilmSearchControllerTest extends WebTestCase
         $client = static::createClient();
 
         $mockRepo = $this->createMock(FilmRepository::class);
-        $mockRepo->method('searchAdvanced')->willReturn([
+        $mockRepo->method('searchAdvanced')->with('alp', [], null, null, 200)->willReturn([
             ['id' => 1, 'titre' => 'Alpha', 'annee' => 2020, 'prixLocationDefaut' => 5, 'affiche' => null],
         ]);
         $mockRepo->method('suggestTitles')->willReturn(['Alpha', 'Alphabeta']);
@@ -35,7 +35,7 @@ class FilmSearchControllerTest extends WebTestCase
         $client = static::createClient();
 
         $mockRepo = $this->createMock(FilmRepository::class);
-        $mockRepo->method('searchAdvanced')->with('gamma', [], null, null, 20)->willReturn([
+        $mockRepo->method('searchAdvanced')->with('gamma', [], null, null, 200)->willReturn([
             ['id' => 5, 'titre' => 'Gamma', 'annee' => 2010, 'prixLocationDefaut' => 7, 'affiche' => null],
         ]);
         $mockRepo->method('suggestTitles')->willReturn(['Gamma']);
@@ -55,7 +55,7 @@ class FilmSearchControllerTest extends WebTestCase
         $client = static::createClient();
 
         $mockRepo = $this->createMock(FilmRepository::class);
-        $mockRepo->method('searchAdvanced')->with(null, [3], 2000, 2000, 20)->willReturn([
+        $mockRepo->method('searchAdvanced')->with(null, [3], 2000, 2000, 200)->willReturn([
             ['id' => 2, 'titre' => 'Beta', 'annee' => 2000, 'prixLocationDefaut' => 6, 'affiche' => null],
         ]);
         $mockRepo->method('suggestTitles')->willReturn([]);
@@ -76,7 +76,7 @@ class FilmSearchControllerTest extends WebTestCase
         $client = static::createClient();
 
         $mockRepo = $this->createMock(FilmRepository::class);
-        $mockRepo->method('searchAdvanced')->with(null, [2], null, null, 20)->willReturn([
+        $mockRepo->method('searchAdvanced')->with(null, [2], null, null, 200)->willReturn([
             ['id' => 3, 'titre' => 'Delta', 'annee' => 1999, 'prixLocationDefaut' => 4, 'affiche' => null],
         ]);
         $mockRepo->method('suggestTitles')->willReturn([]);
@@ -96,7 +96,7 @@ class FilmSearchControllerTest extends WebTestCase
         $client = static::createClient();
 
         $mockRepo = $this->createMock(FilmRepository::class);
-        $mockRepo->method('searchAdvanced')->with(null, [], 1995, 1995, 20)->willReturn([
+        $mockRepo->method('searchAdvanced')->with(null, [], 1995, 1995, 200)->willReturn([
             ['id' => 4, 'titre' => 'Epsilon', 'annee' => 1995, 'prixLocationDefaut' => 3, 'affiche' => null],
         ]);
         $mockRepo->method('suggestTitles')->willReturn([]);

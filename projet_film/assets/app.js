@@ -47,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Live advanced search on films index
+    const searchForm = document.getElementById('live-filter-form');
+    const searchButton = document.getElementById('live-filter-button');
     const searchInput = document.getElementById('search-term');
     const suggestionsBox = document.getElementById('search-suggestions');
     const liveResults = document.getElementById('live-search-results');
@@ -56,11 +58,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let debounceTimer;
 
+    const catalog = document.getElementById('film-catalog');
+    const pagination = document.getElementById('film-pagination');
+    const emptyCatalogMsg = document.getElementById('film-catalog-empty');
+    const liveEmpty = document.getElementById('live-empty');
+
+    const toggleCatalogVisibility = (showLive) => {
+        if (catalog) catalog.classList.toggle('d-none', showLive);
+        if (pagination) pagination.classList.toggle('d-none', showLive);
+        if (emptyCatalogMsg) emptyCatalogMsg.classList.toggle('d-none', showLive);
+        if (liveResults) liveResults.classList.toggle('d-none', !showLive);
+    };
+
     const renderResults = (items) => {
         if (!liveResults || !liveGrid) return;
         liveGrid.innerHTML = '';
-        if (!items || items.length === 0) {
-            liveResults.classList.add('d-none');
+        const hasItems = Array.isArray(items) && items.length > 0;
+
+        if (liveEmpty) {
+            liveEmpty.classList.toggle('d-none', hasItems);
+        }
+
+        if (!hasItems) {
+            toggleCatalogVisibility(true);
             return;
         }
         items.forEach((item) => {
@@ -80,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>`;
             liveGrid.appendChild(card);
         });
-        liveResults.classList.remove('d-none');
+        toggleCatalogVisibility(true);
     };
 
     const renderSuggestions = (suggestions) => {
@@ -105,16 +125,16 @@ document.addEventListener("DOMContentLoaded", () => {
         suggestionsBox.classList.remove('d-none');
     };
 
-    const triggerSearch = () => {
+    const triggerSearch = (evt) => {
+        if (evt) evt.preventDefault();
         const term = (searchInput?.value || '').trim();
         const hasTerm = term.length > 0;
         const hasFilters = !!(genreSelect?.value || anneeInput?.value);
 
-        if (!hasTerm && !hasFilters) {
-            renderResults([]);
-            renderSuggestions([]);
-            return;
-        }
+        // Mode live : toujours afficher la zone des résultats, même sans filtre/terme
+        toggleCatalogVisibility(true);
+        if (liveGrid) liveGrid.innerHTML = '';
+        if (liveEmpty) liveEmpty.classList.add('d-none');
 
         const params = new URLSearchParams();
         if (hasTerm) params.set('q', term);
@@ -143,6 +163,13 @@ document.addEventListener("DOMContentLoaded", () => {
             debounceTimer = setTimeout(triggerSearch, 250);
         });
         searchInput.addEventListener('focus', triggerSearch);
+    }
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', triggerSearch);
+    }
+    if (searchButton) {
+        searchButton.addEventListener('click', triggerSearch);
     }
 
     if (genreSelect) {

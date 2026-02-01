@@ -18,12 +18,13 @@ final class FilmController extends AbstractController
     #[Route('/films', name: 'app_film_index')]
     public function index(Request $request, FilmRepository $filmRepository, GenreRepository $genreRepository): Response
     {
-        $genreId = $request->query->getInt('genre', 0);
-        $annee = $request->query->getInt('annee', 0);
+    $genreId = $request->query->getInt('genre', 0);
+    $annee = $request->query->getInt('annee', 0);
+    $term = trim((string) $request->query->get('q', '')) ?: null;
         $page = max(1, $request->query->getInt('page', 1));
         $limit = 9;
 
-        $qb = $filmRepository->createFilteredQueryBuilder($genreId ?: null, $annee ?: null);
+    $qb = $filmRepository->createFilteredQueryBuilder($genreId ?: null, $annee ?: null, $term);
 
         $query = $qb->getQuery();
         $total = count($query->getResult());
@@ -41,6 +42,7 @@ final class FilmController extends AbstractController
             'genres' => $genreRepository->findAll(),
             'current_genre' => $genreId,
             'current_annee' => $annee ?: '',
+            'current_term' => $term ?? '',
             'current_page' => $page,
             'total_pages' => $totalPages,
         ]);
@@ -54,8 +56,9 @@ final class FilmController extends AbstractController
         $genreIds = array_filter(array_map('intval', $genreParam !== '' ? explode(',', $genreParam) : []));
         $anneeMin = $request->query->getInt('annee_min', 0) ?: null;
         $anneeMax = $request->query->getInt('annee_max', 0) ?: null;
+        $limit = $request->query->getInt('limit', 200);
 
-        $results = $filmRepository->searchAdvanced($term ?: null, $genreIds, $anneeMin, $anneeMax, 20);
+        $results = $filmRepository->searchAdvanced($term ?: null, $genreIds, $anneeMin, $anneeMax, $limit);
         $suggestions = $filmRepository->suggestTitles($term ?: null, 5);
 
         return $this->json([

@@ -17,12 +17,13 @@ class FilmRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne un QueryBuilder filtré par genre et/ou année.
+     * Retourne un QueryBuilder filtré par genre, année et terme plein texte (titre/synopsis).
      *
-     * @param int|null $genreId Identifiant d'un genre à filtrer
-     * @param int|null $annee   Année de production
+     * @param int|null    $genreId Identifiant d'un genre à filtrer
+     * @param int|null    $annee   Année de production
+     * @param string|null $term    Mot-clé (titre ou synopsis)
      */
-    public function createFilteredQueryBuilder(?int $genreId, ?int $annee)
+    public function createFilteredQueryBuilder(?int $genreId, ?int $annee, ?string $term = null)
     {
         $qb = $this->createQueryBuilder('f')
             ->leftJoin('f.genres', 'g')
@@ -38,7 +39,14 @@ class FilmRepository extends ServiceEntityRepository
                ->setParameter('annee', $annee);
         }
 
-        return $qb->orderBy('f.titre', 'ASC');
+        if ($term) {
+            $qb->andWhere('LOWER(f.titre) LIKE :term OR LOWER(f.synopsis) LIKE :term')
+               ->setParameter('term', '%'.mb_strtolower($term).'%');
+        }
+
+        return $qb
+            ->groupBy('f.id')
+            ->orderBy('f.titre', 'ASC');
     }
 
     /**
@@ -76,8 +84,9 @@ class FilmRepository extends ServiceEntityRepository
             $qb->andWhere('f.annee <= :amax')->setParameter('amax', $anneeMax);
         }
 
-        $qb->orderBy('f.titre', 'ASC')
-           ->setMaxResults($limit);
+          $qb->groupBy('f.id')
+              ->orderBy('f.titre', 'ASC')
+              ->setMaxResults($limit);
 
         return $qb->getQuery()->getArrayResult();
     }
