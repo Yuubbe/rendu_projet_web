@@ -4,7 +4,10 @@
 
 {% block body %}
 <div class="container mt-4">
-    <h1 class="mb-4">Catalogue des films</h1>
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+        <h1 class="mb-0">Catalogue des films</h1>
+        <a class="btn btn-success" href="{{ path('app_film_new') }}">+ Ajouter un film</a>
+    </div>
 
     <form method="get" class="row g-3 mb-4" id="live-filter-form">
         <div class="col-md-4">
@@ -34,7 +37,32 @@
     <div id="live-search-results" class="mt-4">
         <h2 class="h5 mb-3">Résultats instantanés</h2>
         <div id="live-empty" class="alert alert-info d-none">Aucun résultat pour ces filtres.</div>
-        <div class="row row-cols-1 row-cols-md-3 g-4" id="live-results-grid"></div>
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="live-results-grid">
+            {% for film in films %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% set affichePath = film.affiche ? asset(film.affiche) : asset('images/banniere.jpg') %}
+                        <img src="{{ affichePath }}" class="card-img-top" alt="Affiche de {{ film.titre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ film.titre }}</h5>
+                            <p class="card-text text-muted">{{ film.annee }}</p>
+                            <p class="card-text fw-bold">{{ film.prixLocationDefaut }} €</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between gap-2">
+                            <a class="btn btn-sm btn-outline-primary" href="{{ path('app_film_show', {id: film.id}) }}">Détails</a>
+                            <form method="post" action="{{ path('app_film_delete', {id: film.id}) }}" onsubmit="return confirm('Supprimer ce film ?');" class="m-0 p-0">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_film_' ~ film.id) }}">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info mb-0">Aucun film disponible pour le moment.</div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

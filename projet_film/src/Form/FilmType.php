@@ -6,6 +6,7 @@ use App\Entity\Film;
 use App\Entity\Genre;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,6 +35,11 @@ class FilmType extends AbstractType
             ])
             ->add('affiche', TextType::class, [
                 'label' => 'URL ou chemin de l\'affiche',
+                'required' => false,
+            ])
+            ->add('afficheFile', FileType::class, [
+                'label' => 'Importer une affiche (jpg/png)',
+                'mapped' => false,
                 'required' => false,
             ])
             ->add('genres', EntityType::class, [

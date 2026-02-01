@@ -58,16 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let debounceTimer;
 
-    const catalog = document.getElementById('film-catalog');
-    const pagination = document.getElementById('film-pagination');
-    const emptyCatalogMsg = document.getElementById('film-catalog-empty');
     const liveEmpty = document.getElementById('live-empty');
 
-    const toggleCatalogVisibility = (showLive) => {
-        if (catalog) catalog.classList.toggle('d-none', showLive);
-        if (pagination) pagination.classList.toggle('d-none', showLive);
-        if (emptyCatalogMsg) emptyCatalogMsg.classList.toggle('d-none', showLive);
-        if (liveResults) liveResults.classList.toggle('d-none', !showLive);
+    const toggleCatalogVisibility = () => {
+        if (liveResults) liveResults.classList.remove('d-none');
+    };
+
+    const setLiveEmpty = (message, show) => {
+        if (!liveEmpty) return;
+        liveEmpty.textContent = message;
+        liveEmpty.classList.toggle('d-none', !show);
     };
 
     const renderResults = (items) => {
@@ -75,12 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
         liveGrid.innerHTML = '';
         const hasItems = Array.isArray(items) && items.length > 0;
 
-        if (liveEmpty) {
-            liveEmpty.classList.toggle('d-none', hasItems);
-        }
+        setLiveEmpty('Aucun résultat pour ces filtres.', hasItems ? false : true);
 
         if (!hasItems) {
-            toggleCatalogVisibility(true);
+            toggleCatalogVisibility();
             return;
         }
         items.forEach((item) => {
@@ -100,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>`;
             liveGrid.appendChild(card);
         });
-        toggleCatalogVisibility(true);
+        toggleCatalogVisibility();
     };
 
     const renderSuggestions = (suggestions) => {
@@ -131,10 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const hasTerm = term.length > 0;
         const hasFilters = !!(genreSelect?.value || anneeInput?.value);
 
-        // Mode live : toujours afficher la zone des résultats, même sans filtre/terme
-        toggleCatalogVisibility(true);
-        if (liveGrid) liveGrid.innerHTML = '';
-        if (liveEmpty) liveEmpty.classList.add('d-none');
+    // Mode live : toujours afficher la zone des résultats
+    toggleCatalogVisibility();
+    setLiveEmpty('Chargement…', true);
 
         const params = new URLSearchParams();
         if (hasTerm) params.set('q', term);
@@ -152,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderSuggestions(hasTerm ? data.suggestions || [] : []);
             })
             .catch(() => {
-                renderResults([]);
                 renderSuggestions([]);
+                setLiveEmpty('Erreur lors du chargement.', true);
             });
     };
 
@@ -182,5 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(triggerSearch, 250);
         });
+    }
+
+    // Premier rendu : charger tous les films
+    if (liveResults && liveGrid) {
+        triggerSearch();
     }
 });
