@@ -16,12 +16,10 @@
 
 
 -- Listage de la structure de la base pour projet_web
-DROP DATABASE IF EXISTS `projet_web`;
 CREATE DATABASE IF NOT EXISTS `projet_web` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `projet_web`;
 
 -- Listage de la structure de table projet_web. detail_location
-DROP TABLE IF EXISTS `detail_location`;
 CREATE TABLE IF NOT EXISTS `detail_location` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prix_jour` decimal(6,2) NOT NULL,
@@ -34,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `detail_location` (
   CONSTRAINT `FK_DETAIL_LOCATION` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table projet_web.detail_location : ~3 rows (environ)
+-- Listage des données de la table projet_web.detail_location : ~5 rows (environ)
 INSERT INTO `detail_location` (`id`, `prix_jour`, `film_id`, `location_id`) VALUES
 	(1, 4.00, 1, 1),
 	(2, 5.50, 2, 1),
@@ -43,7 +41,6 @@ INSERT INTO `detail_location` (`id`, `prix_jour`, `film_id`, `location_id`) VALU
 	(5, 5.00, 5, 4);
 
 -- Listage de la structure de table projet_web. doctrine_migration_versions
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
   `version` varchar(191) NOT NULL,
   `executed_at` datetime DEFAULT NULL,
@@ -56,7 +53,6 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 	('DoctrineMigrations\\Version20260130174346', '2026-01-30 17:43:53', 100);
 
 -- Listage de la structure de table projet_web. film
-DROP TABLE IF EXISTS `film`;
 CREATE TABLE IF NOT EXISTS `film` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `titre` varchar(255) NOT NULL,
@@ -66,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `film` (
   `prix_location_defaut` int(11) NOT NULL,
   `affiche` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Listage des données de la table projet_web.film : ~5 rows (environ)
 INSERT INTO `film` (`id`, `titre`, `annee`, `duree`, `synopsis`, `prix_location_defaut`, `affiche`) VALUES
@@ -74,10 +70,10 @@ INSERT INTO `film` (`id`, `titre`, `annee`, `duree`, `synopsis`, `prix_location_
 	(2, 'Le Seigneur des Anneaux : La Communauté de l\'Anneau', 2001, 178, 'Un hobbit se lance dans une quête pour détruire un anneau maléfique.', 4, '/images/lotr1.jpg'),
 	(3, 'Interstellar', 2014, 169, 'Une équipe traverse un trou de ver pour trouver un nouveau foyer à l\'humanité.', 6, '/images/interstellar.jpg'),
 	(4, 'Your Name', 2016, 106, 'Deux lycéens échangent mystérieusement leurs corps.', 4, '/images/yourname.jpg'),
-	(5, 'Avengers: Endgame', 2019, 181, 'Les Avengers tentent d\'inverser les dégâts causés par Thanos.', 5, '/images/endgame.jpg');
+	(5, 'Avengers: Endgame', 2019, 181, 'Les Avengers tentent d\'inverser les dégâts causés par Thanos.', 5, '/images/endgame.jpg'),
+	(6, 'Demon Slayer : La Forteresse Infini', 2025, 240, 'Demon Slayer raconte l\'épopée de Tanjirō, un jeune garçon du Japon rural au début du XXe siècle, dont la famille a presque entièrement été décimée par des démons, des êtres humanoïdes détenteurs de pouvoirs surnaturels.', 7, '/uploads/affiches/demon-697fbed5995111.98469190.jpg');
 
 -- Listage de la structure de table projet_web. film_genre
-DROP TABLE IF EXISTS `film_genre`;
 CREATE TABLE IF NOT EXISTS `film_genre` (
   `film_id` int(11) NOT NULL,
   `genre_id` int(11) NOT NULL,
@@ -99,10 +95,10 @@ INSERT INTO `film_genre` (`film_id`, `genre_id`) VALUES
 	(4, 3),
 	(4, 5),
 	(5, 1),
-	(5, 4);
+	(5, 4),
+	(6, 5);
 
 -- Listage de la structure de table projet_web. genre
-DROP TABLE IF EXISTS `genre`;
 CREATE TABLE IF NOT EXISTS `genre` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) NOT NULL,
@@ -118,7 +114,6 @@ INSERT INTO `genre` (`id`, `nom`) VALUES
 	(5, 'Animation');
 
 -- Listage de la structure de table projet_web. location
-DROP TABLE IF EXISTS `location`;
 CREATE TABLE IF NOT EXISTS `location` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date_location` date NOT NULL,
@@ -129,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `location` (
   CONSTRAINT `FK_LOCATION_USER` FOREIGN KEY (`utilisateur_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table projet_web.location : ~0 rows (environ)
+-- Listage des données de la table projet_web.location : ~4 rows (environ)
 INSERT INTO `location` (`id`, `date_location`, `location_prix_final`, `utilisateur_id`) VALUES
 	(1, '2026-01-15', 9.50, 1),
 	(2, '2026-02-01', 4.00, 3),
@@ -137,7 +132,6 @@ INSERT INTO `location` (`id`, `date_location`, `location_prix_final`, `utilisate
 	(4, '2026-02-01', 5.00, 3);
 
 -- Listage de la structure de table projet_web. messenger_messages
-DROP TABLE IF EXISTS `messenger_messages`;
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `body` longtext NOT NULL,
@@ -153,7 +147,6 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 -- Listage des données de la table projet_web.messenger_messages : ~0 rows (environ)
 
 -- Listage de la structure de table projet_web. tarif
-DROP TABLE IF EXISTS `tarif`;
 CREATE TABLE IF NOT EXISTS `tarif` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `jour_semaine` varchar(20) NOT NULL,
@@ -178,7 +171,6 @@ INSERT INTO `tarif` (`id`, `jour_semaine`, `coefficient`, `film_id`) VALUES
 	(10, 'samedi', 1.3, 3);
 
 -- Listage de la structure de table projet_web. user
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(180) NOT NULL,
@@ -195,7 +187,6 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
 	(3, 'yuumie31@gmail.com', '[]', '$2y$13$QdbKqeVwFnNMBsWkZSmXn.3MKFsIDatKaTD8sublp18.PtUOzGk6i');
 
 -- Listage de la structure de table projet_web. user_film
-DROP TABLE IF EXISTS `user_film`;
 CREATE TABLE IF NOT EXISTS `user_film` (
   `user_id` int(11) NOT NULL,
   `film_id` int(11) NOT NULL,
@@ -206,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `user_film` (
   CONSTRAINT `FK_USER_FILM_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table projet_web.user_film : ~3 rows (environ)
+-- Listage des données de la table projet_web.user_film : ~4 rows (environ)
 INSERT INTO `user_film` (`user_id`, `film_id`) VALUES
 	(1, 1),
 	(1, 3),
