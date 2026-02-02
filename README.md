@@ -51,7 +51,7 @@ php bin/console doctrine:schema:validate
 ### Enfin démarrer le serveur
 
 ```
-symfony serve
+php -S localhost:8000 -t public
 ```
 
 Le site est maintenant disponible sur un navigateur à l'adresse [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
